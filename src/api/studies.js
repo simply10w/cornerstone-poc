@@ -17,16 +17,20 @@ function transform(study) {
   for (const k of keys(Dictionary)) {
     const transformer = Dictionary[k];
     const item = study[k];
-    if (!item.Value) {
+    if (item && item.Value && item.Value[0]) {
+      output[transformer.toProp] = transformer.getValue(item);
+    } else {
       console.log(k, study);
-      continue;
     }
-    output[transformer.toProp] = transformer.getValue(item);
   }
   return output;
 }
 
 const Dictionary = {
+  "00081030": {
+    getValue: (item) => item.Value[0],
+    toProp: "Description",
+  },
   "00080061": {
     // CS
     getValue: (item) => item.Value.join("/"),
@@ -46,6 +50,17 @@ const Dictionary = {
     // PN
     getValue: (item) => item.Value[0],
     toProp: "Pid",
+  },
+  "00080020": {
+    // DA,
+    getValue: (item) => {
+      const date = item.Value[0];
+      const YYYY = date.slice(0, 4);
+      const MM = date.slice(4, 6);
+      const DD = date.slice(6, 8);
+      return new Date(`${YYYY}-${MM}-${DD}`);
+    },
+    toProp: "Date",
   },
 };
 

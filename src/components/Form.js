@@ -22,7 +22,7 @@ const allowedMeasurements = new Set([
   TYPES.FreehandMouse,
 ]);
 
-export function Form({ measurements, viewport }) {
+export function Form({ base, measurements, viewport }) {
   const MeasurmentTypes = toPairs(measurements)
     .filter(([type, ms]) => allowedMeasurements.has(type) && size(ms) > 0)
     .map(([type, items], index) => (
@@ -31,6 +31,7 @@ export function Form({ measurements, viewport }) {
 
   return (
     <div style={{ textAlign: "left" }}>
+      <BaseInfo base={base} />
       <ViewportInfo viewport={viewport} />
       {MeasurmentTypes}
       {/* <form noValidate autoComplete="off">
@@ -44,7 +45,23 @@ export function Form({ measurements, viewport }) {
 
 const registry = {
   [TYPES.Length]: (item) => <LengthForm item={item} />,
+  [TYPES.Angle]: (item) => <LengthForm item={item} />,
+  [TYPES.ArrowAnnotate]: (item) => <LengthForm item={item} />,
+  [TYPES.EllipticalRoi]: (item) => <LengthForm item={item} />,
+  [TYPES.FreehandMouse]: (item) => <LengthForm item={item} />,
+  [TYPES.RectangleRoi]: (item) => <LengthForm item={item} />,
+  [TYPES.CircleRoi]: (item) => <LengthForm item={item} />,
 };
+
+function BaseInfo({ base }) {
+  return (
+    <>
+      <p>
+        <b>Study:</b> {base.StudyInstanceUID}
+      </p>
+    </>
+  );
+}
 
 function ViewportInfo({ viewport }) {
   return (
@@ -85,13 +102,10 @@ function LengthForm({ item }) {
         <b>SeriesInstanceUID:</b> {item.SeriesInstanceUID}
       </p>
       <p>
-        <b>StudyInstanceUID:</b> {item.StudyInstanceUID}
-      </p>
-      <p>
         <b>PatientID:</b> {item.PatientID}
       </p>
       <p>
-        <b>Size:</b> {`${item.length} ${item.unit}`}
+        <b>Size:</b> {`${item.length} ${item.unit || ""}`}
       </p>
       <p>
         <b>Start(x,y):</b> {`${item.handles.start.x}, ${item.handles.start.y}`}
@@ -113,3 +127,21 @@ function MeasurementType({ type, items }) {
     </>
   );
 }
+
+/**
+ * 
+ * RectangleRoi, "EllipticalRoi"
+ * handles: 
+ *    start: {x: 171.23076923076925, y: 307.69230769230774 }
+ *    end: {x: 368.1538461538462, y: 370.0512820512821 }
+ *    initialRotation?: 0
+ * cachedStats:
+      area: 24890.073910034615
+      count: 25012
+      mean: 214.29158004158003
+      variance: 1433.0076965759217
+      stdDev: 37.85508812003905
+      min: 30
+      max: 255
+      meanStdDevSUV: undefined
+ */

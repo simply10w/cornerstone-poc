@@ -7,3 +7,16 @@ html,
 li {
   list-style: none;
 }
+
+.entry-header {
+  display: none !important;
+}
+
+#ohif-root,
+.labellingComponent .treeContent {
+  background-color: #000 !important;
+}
+
+.labellingComponent .locationDescriptionWrapper {
+  color: #000 !important;
+}

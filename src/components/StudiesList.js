@@ -17,6 +17,13 @@ const useStyles = makeStyles({
   },
 });
 
+const options = {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+};
+
 export function StudiesList() {
   const classes = useStyles();
 
@@ -34,19 +41,24 @@ export function StudiesList() {
       <Table className={classes.table} size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
             <TableCell>PatientID</TableCell>
+            <TableCell>Name</TableCell>
             <TableCell>Modality</TableCell>
+            <TableCell>Description</TableCell>
+            <TableCell>Date</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {studies.map((row) => (
-            <TableRow key={row.Id}>
+            <TableRow key={row.StudyInstanceUID}>
               <TableCell>
-                <Link to={`/viewer/${row.StudyInstanceUID}`}>{row.Name}</Link>
+                {" "}
+                <Link to={`/viewer/${row.StudyInstanceUID}`}>{row.Pid}</Link>
               </TableCell>
-              <TableCell>{row.Pid}</TableCell>
+              <TableCell>{row.Name}</TableCell>
               <TableCell>{row.Modality}</TableCell>
+              <TableCell>{row.Description}</TableCell>
+              <TableCell>{row.Date.toLocaleString("en-US", options)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
