@@ -1,7 +1,5 @@
 import React from "react";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
+import { Paper, Grid, Box, makeStyles, createStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -19,8 +17,14 @@ const useStyles = makeStyles((theme) =>
     data: {
       color: "#fff",
     },
+    leftPanel: {
+      maxHeight: "100vh",
+      overflow: "scroll",
+    },
   })
 );
+
+function LeftPanelScrollable() {}
 
 export function Layout({ renderLeftPanel, renderRightPanel }) {
   const classes = useStyles();
@@ -30,7 +34,9 @@ export function Layout({ renderLeftPanel, renderRightPanel }) {
       <div className={classes.root}>
         <Grid container spacing={0}>
           <Grid item xs={4}>
-            {renderLeftPanel()}
+            <Box pr={2}>
+              <div className={classes.leftPanel}>{renderLeftPanel()}</div>
+            </Box>
           </Grid>
           <Grid item xs={8}>
             {renderRightPanel()}
