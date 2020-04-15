@@ -9,7 +9,7 @@ function getSOPInstanceUIDFromUrl(study, serie, url) {
   return url;
 }
 
-export function getFullState(StudyInstanceUID) {
+export function getFullState(window, StudyInstanceUID) {
   const elements = window.cornerstone.getEnabledElements();
   const state = window.store.getState();
 
@@ -93,6 +93,7 @@ function measurementFactory(m) {
     location: m.location,
     label: m.label || m.text,
     description: m.description,
+    measurementNumber: m.measurementNumber,
   };
 
   const extra = {};
@@ -111,6 +112,10 @@ function measurementFactory(m) {
       extra.mean = m.cachedStats.mean;
       extra.stdDev = m.cachedStats.stdDev;
       break;
+    case "Bidirectional":
+      extra.label = m.labels[0];
+      extra.longestDiameter = m.longestDiameter;
+      extra.shortestDiameter = m.shortestDiameter;
   }
 
   return { ...base, ...extra };

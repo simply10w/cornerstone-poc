@@ -52,7 +52,6 @@ export function StudiesList() {
           {studies.map((row) => (
             <TableRow key={row.StudyInstanceUID}>
               <TableCell>
-                {" "}
                 <Link to={`/viewer/${row.StudyInstanceUID}`}>{row.Pid}</Link>
               </TableCell>
               <TableCell>{row.Name}</TableCell>

@@ -1,75 +1,54 @@
-import React, { useState, useCallback, useReducer, useEffect } from "react";
-import { Layout } from "./components/Layout";
-import { Report } from "./components/Report/Report";
-import { Viewer } from "./components/Viewer";
+import { Button, Grid } from "@material-ui/core";
+import React from "react";
+import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+import { Layout, LayoutWrapper } from "./components/Layout";
+import { ReportShort } from "./components/ReportShort/ReportShort";
 import { StudiesList } from "./components/StudiesList";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useParams,
-} from "react-router-dom";
+import { Viewer } from "./components/Viewer";
 import { ThemeProvider } from "./core/ThemeProvider";
-import { getFullState } from "./core/state";
-import { debounce } from "lodash";
+import { useFullPageViewer } from "./hooks/useFullpageViewer";
+import { useCornerstone } from "./hooks/useCornerstone";
 
-function cornerstoneChanged() {
-  window.store.dispatch({ type: "PING " });
-}
+const ViewerPanel = ({ openInFullWindow }) => (
+  <>
+    <Grid container spacing={0}>
+      <Grid item xs={4}>
+        <Button onClick={openInFullWindow}>Open in another window</Button>
+      </Grid>
+    </Grid>
+    <Viewer />
+  </>
+);
 
-const Events = {
-  MouseUp: "cornerstonetoolsmouseup",
-  DragEnd: "cornerstonetoolstouchdragend",
-};
-
-function subscribeToCornerstone() {
-  unsubscribeFromCornerstone();
-  window.cornerstone.getEnabledElements().forEach((e) => {
-    e.element.addEventListener(Events.MouseUp, cornerstoneChanged);
-    e.element.addEventListener(Events.DragEnd, cornerstoneChanged);
-  });
-}
-function unsubscribeFromCornerstone() {
-  window.cornerstone.getEnabledElements().forEach((e) => {
-    e.element.removeEventListener(Events.MouseUp, cornerstoneChanged);
-    e.element.removeEventListener(Events.DragEnd, cornerstoneChanged);
-  });
-}
-
-const ViewerPage = ({ match }) => {
-  const [state, setState] = useState(null);
-  const StudyInstanceUID = useParams().id;
-
-  const populate = useCallback(() => {
-    try {
-      const _state = getFullState(StudyInstanceUID);
-      console.log(_state);
-      setState(_state);
-    } catch (err) {
-      console.log(err);
-      console.log("There was an error, ignore");
-    }
-  }, [StudyInstanceUID]);
-
-  const onStoreEvent = debounce(() => {
-    subscribeToCornerstone();
-    populate();
-  }, 100);
-
-  useEffect(() => {
-    const cleanup = window.store.subscribe(onStoreEvent);
-    return () => {
-      cleanup();
-      unsubscribeFromCornerstone();
-    };
-  }, [populate]);
+const ViewerPage = () => {
+  const {
+    isViewerOnlyWindow,
+    isViewerOpenedInAnotherWindow,
+    openInFullWindow,
+    viewerWindow,
+  } = useFullPageViewer();
+  const state = useCornerstone(viewerWindow);
 
   const leftPanel = () => {
-    return state && <Report report={state} />;
+    return state && <ReportShort report={state} />;
   };
-  const rightPanel = () => <Viewer />;
-  return <Layout renderLeftPanel={leftPanel} renderRightPanel={rightPanel} />;
+  const rightPanel = () => <ViewerPanel openInFullWindow={openInFullWindow} />;
+
+  if (isViewerOnlyWindow) {
+    return (
+      <LayoutWrapper>
+        <Viewer />
+      </LayoutWrapper>
+    );
+  }
+  if (isViewerOpenedInAnotherWindow) {
+    return <LayoutWrapper>{leftPanel()}</LayoutWrapper>;
+  }
+  return (
+    <LayoutWrapper>
+      <Layout renderLeftPanel={leftPanel} renderRightPanel={rightPanel} />
+    </LayoutWrapper>
+  );
 };
 
 const Routes = () => (

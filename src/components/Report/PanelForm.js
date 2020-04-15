@@ -1,6 +1,6 @@
 import { Box, Card, CardContent, makeStyles } from "@material-ui/core";
 import React from "react";
-import { TextField } from "../TextField";
+import { TextField } from "../FormFields/TextField";
 import { Measurements } from "./Measurements/Measurements";
 import { ViewportInfo } from "./ViewportInfo";
 

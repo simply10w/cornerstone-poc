@@ -1,6 +1,6 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import { TextField } from "../../TextField";
+import { TextField } from "../../FormFields/TextField";
 
 export function MeasurementLabelling({ measurement }) {
   return (

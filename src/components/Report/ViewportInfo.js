@@ -1,7 +1,7 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import { CheckboxField } from "../CheckboxField";
-import { TextField } from "../TextField";
+import { CheckboxField } from "../FormFields/CheckboxField";
+import { TextField } from "../FormFields/TextField";
 
 export function ViewportInfo({ view }) {
   return (

@@ -1,6 +1,6 @@
 import { Box, Paper } from "@material-ui/core";
 import React from "react";
-import { TextField } from "../TextField";
+import { TextField } from "../FormFields/TextField";
 import { Panels } from "./Panels";
 
 export function Report({ report }) {

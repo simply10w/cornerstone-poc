@@ -1,9 +1,4 @@
-import {
-  Box,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-} from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import React from "react";
 import { LengthForm } from "./LengthForm";
 import { AngleForm } from "./AngleForm";
@@ -30,17 +25,14 @@ export function Measurements({ measurements }) {
   }
 
   return (
-    <ExpansionPanel>
-      <ExpansionPanelSummary>
-        <h2>Measurements</h2>
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
-        {measurements.map((measurement, idx) => (
-          <Box mb={3} key={idx}>
-            {renderMeasurement(measurement)}
-          </Box>
-        ))}
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+    <>
+      <h2>Measurements</h2>
+
+      {measurements.map((measurement, idx) => (
+        <Box mb={3} key={idx}>
+          {renderMeasurement(measurement)}
+        </Box>
+      ))}
+    </>
   );
 }
