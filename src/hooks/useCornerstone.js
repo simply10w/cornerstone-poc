@@ -38,8 +38,8 @@ export const useCornerstone = (viewerWindow) => {
     const cleanup = viewerWindow.store.subscribe(onStoreEvent);
 
     return () => {
-      disconnect();
       cleanup();
+      disconnect();
     };
   }, [StudyInstanceUID, viewerWindow]);
 

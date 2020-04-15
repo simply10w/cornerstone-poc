@@ -12,7 +12,7 @@ export function Lesions({ lesions }) {
           Slice Number of ROI: {lesion.sliceNumber}/{lesion.totalSlices}
         </p>
         <Box mb={3}>
-          <TextField name="location" label="Location" value={lesion.location} />
+          <TextField label="Location" value={lesion.location || ""} />
         </Box>
 
         <Box mb={3}>
@@ -66,7 +66,11 @@ function Length({ lesion }) {
 function ArrowAnnotate({ lesion }) {
   return (
     <Box mb={3}>
-      <TextField name="annotation" label="Annotation" value={lesion.label} />
+      <TextField
+        name="annotation"
+        label="Annotation"
+        value={lesion.label || ""}
+      />
     </Box>
   );
 }
@@ -75,7 +79,12 @@ function RectangleRoi({ lesion }) {
   return (
     <>
       <Box mb={3}>
-        <TextField name="area" label="Area" type="number" value={lesion.area} />
+        <TextField
+          name="area"
+          label="Area"
+          type="number"
+          value={lesion.area || 0}
+        />
       </Box>
     </>
   );
@@ -85,7 +94,12 @@ function EllipticalRoi({ lesion }) {
   return (
     <>
       <Box mb={3}>
-        <TextField name="area" label="Area" type="number" value={lesion.area} />
+        <TextField
+          name="area"
+          label="Area"
+          type="number"
+          value={lesion.area || 0}
+        />
       </Box>
     </>
   );
@@ -99,7 +113,7 @@ function Bidirectional({ lesion }) {
           name="LD"
           label="LD (Long Diameter)"
           type="number"
-          value={lesion.longestDiameter}
+          value={lesion.longestDiameter || 0}
         />
       </Box>
       <Box mb={3}>
@@ -107,7 +121,7 @@ function Bidirectional({ lesion }) {
           name="SD"
           label="SD (Short Diameter)"
           type="number"
-          value={lesion.shortestDiameter}
+          value={lesion.shortestDiameter || 0}
         />
       </Box>
     </>
