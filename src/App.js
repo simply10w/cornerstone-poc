@@ -30,9 +30,9 @@ const ViewerPage = () => {
   const state = useCornerstone(viewerWindow);
 
   useEffect(() => {
-    if (window.parent) {
+    if (window.parent && window.CONSUMER_APP_URL) {
       try {
-        window.parent.postMessage(state, "http://localhost:8080");
+        window.parent.postMessage(state, window.CONSUMER_APP_URL);
       } catch {}
     }
   }, [state]);
