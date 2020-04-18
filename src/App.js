@@ -1,5 +1,5 @@
 import { Button, Grid } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import { Layout, LayoutWrapper } from "./components/Layout";
 import { ReportShort } from "./components/ReportShort/ReportShort";
@@ -29,24 +29,37 @@ const ViewerPage = () => {
   } = useFullPageViewer();
   const state = useCornerstone(viewerWindow);
 
-  const leftPanel = () => {
-    return state && <ReportShort report={state} />;
-  };
-  const rightPanel = () => <ViewerPanel openInFullWindow={openInFullWindow} />;
+  useEffect(() => {
+    if (window.parent) {
+      try {
+        window.parent.postMessage(state, "http://localhost:8080");
+      } catch {}
+    }
+  }, [state]);
 
-  if (isViewerOnlyWindow) {
-    return (
-      <LayoutWrapper>
-        <Viewer />
-      </LayoutWrapper>
-    );
-  }
-  if (isViewerOpenedInAnotherWindow) {
-    return <LayoutWrapper>{leftPanel()}</LayoutWrapper>;
-  }
+  // const leftPanel = () => {
+  //   return state && <ReportShort report={state} />;
+  // };
+  // const rightPanel = () => <ViewerPanel openInFullWindow={openInFullWindow} />;
+
+  // if (isViewerOnlyWindow) {
+  //   return (
+  //     <LayoutWrapper>
+  //       <Viewer />
+  //     </LayoutWrapper>
+  //   );
+  // }
+  // if (isViewerOpenedInAnotherWindow) {
+  //   return <LayoutWrapper>{leftPanel()}</LayoutWrapper>;
+  // }
+  // return (
+  //   <LayoutWrapper>
+  //     <Layout renderLeftPanel={leftPanel} renderRightPanel={rightPanel} />
+  //   </LayoutWrapper>
+  // );
   return (
     <LayoutWrapper>
-      <Layout renderLeftPanel={leftPanel} renderRightPanel={rightPanel} />
+      <Viewer />
     </LayoutWrapper>
   );
 };

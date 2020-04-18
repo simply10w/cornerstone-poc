@@ -14,9 +14,7 @@ export const useFullPageViewer = () => {
     if (child.store && child.cornerstone) {
       setViewerWindow(child);
     } else {
-      setTimeout(() => {
-        tryToSetViewer(child);
-      }, 100);
+      setTimeout(() => tryToSetViewer(child), 200);
     }
   };
 

@@ -29,7 +29,13 @@ export function Lesions({ lesions }) {
   return (
     <>
       {list}
-      <Button onClick={() => alert("Submitted!")}>Submit</Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => alert("Form Submitted!")}
+      >
+        Submit
+      </Button>
     </>
   );
 }

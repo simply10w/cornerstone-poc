@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .viewer {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Embed iframe viewer</h1>
+
+    <button
+      class="viewer-options"
+      data-viewerid="1.3.6.1.4.1.25403.345050719074.3824.20170126082902.1"
+    >
+      Open Chest
+    </button>
+    <button
+      class="viewer-options"
+      data-viewerid="1.3.6.1.4.1.14519.5.2.1.2744.7002.373729467545468642229382466905"
+    >
+      Head Neck
+    </button>
+    <button
+      class="viewer-options"
+      data-viewerid="61.7.102432584850582937613178565576727689438"
+    >
+      Lymph nodes
+    </button>
+
+    <iframe id="viewer" class="viewer" src="http://localhost:3000"></iframe>
+
+    <script>
+      const viewer = document.getElementById("viewer");
+
+      document.querySelectorAll(".viewer-options").forEach((option) => {
+        option.addEventListener("click", (event) => {
+          const id = option.dataset.viewerid;
+          viewer.src = `http://localhost:3000/viewer/${id}`;
+        });
+      });
+
+      window.onmessage = (message) => {
+        console.log({ message: message.data });
+      };
+    </script>
+  </body>
+</html>
